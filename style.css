@@ -1,20 +1,38 @@
-.main_screen{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    height: 720px;
-    width: 360px;
-    background-color: powderblue;
+:root{
+    --main-height: 75vh;
+    --main-width: calc(var(--main-height) / 2.25);
 }
-header{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 14%;
+
+*{
+    box-sizing: border-box;
 }
-footer{
-    text-align: center;
-}
+
 body{
     background-color: #d9810f;
+    height: 100vh;
+    width: 33vh;
+    display: grid block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+main{
+    height: var(--main-height);
+    width: var(--main-width);
+}
+
+.main_screen{
+    display: block;
+    height: 100%;
+    width: 100%;
+    background-color: powderblue;
+}
+
+header{
+    display: block;
+    width: 14%;
+}
+
+footer{
+    text-align: center;
 }
