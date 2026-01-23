@@ -28,6 +28,12 @@ main{
     background-color: powderblue;
 }
 
+#bird{
+    position: absolute;
+    width: 3.6%;
+}
+/*madárka kissé dagadt, ezért olyan vastag mint a pálya 1/5-de */
+
 header{
     display: block;
     width: 14%;
