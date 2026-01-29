@@ -21,7 +21,7 @@ main{
     width: var(--main-width);
 }
 
-.main_screen{
+#main_screen{
     display: block;
     height: 100%;
     width: 100%;
@@ -31,6 +31,7 @@ main{
 #bird{
     position: absolute;
     width: 3.6%;
+    z-index: 10;
 }
 /*madárka kissé dagadt, ezért olyan vastag mint a pálya 1/5-de */
 
