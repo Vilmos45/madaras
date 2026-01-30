@@ -10,16 +10,25 @@ let velocityY = 0;
 function jump() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
   bird.style.top = (topVal - 48) + "px";
+  if (!IsInsideParent(bird, GameScreen)) {
+    bird.style.top = (topVal) + "px";
+  }
 }
 
 function BirdFall() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
   bird.style.top = (topVal + 6) + "px";
+  if (!IsInsideParent(bird, GameScreen)) {
+    bird.style.top = (topVal) + "px";
+  }
 }
 
 function down() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
   bird.style.top = (topVal + 12) + "px";
+  if (!IsInsideParent(bird, GameScreen)) {
+    bird.style.top = (topVal) + "px";
+  }
 }
 
 function right() {
@@ -27,13 +36,19 @@ function right() {
   bird.style.transform = "scaleX(1)";
   let leftVal = parseInt(getComputedStyle(bird).left) || 0;
   bird.style.left = (leftVal + 12) + "px";
+  if (!IsInsideParent(bird, GameScreen)) {
+    bird.style.left = (leftVal) + "px";
+  }
 }
 
 function left() {
-  facing = -1;
+  facing = - 1;
   bird.style.transform = "scaleX(-1)";
   let leftVal = parseInt(getComputedStyle(bird).left) || 0;
   bird.style.left = (leftVal - 12) + "px";
+  if (!IsInsideParent(bird, GameScreen)) {
+    bird.style.left = (leftVal) + "px";
+  }
 }
 
 // Check if child is fully inside parent
@@ -72,4 +87,4 @@ setInterval(() => {
     TotalScore = TotalScore + 1;
     score.textContent = TotalScore;
   }
-}, 1000 / 24);
+}, 1000 / 25);

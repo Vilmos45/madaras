@@ -43,6 +43,7 @@ main{
 header{
     display: block;
     width: 14%;
+    margin: auto 25%;
 }
 
 footer{
