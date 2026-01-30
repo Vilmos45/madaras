@@ -26,6 +26,7 @@ main{
     height: 100%;
     width: 100%;
     background-color: powderblue;
+    /*cursor:crosshair;*/
 }
 
 #score{
@@ -38,6 +39,7 @@ main{
     width: 3.6%;
     z-index: 10;
 }
+
 /*madárka kissé dagadt, ezért olyan vastag mint a pálya 1/5-de */
 
 header{
