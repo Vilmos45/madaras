@@ -51,7 +51,6 @@ function left() {
   }
 }
 
-// Check if child is fully inside parent
 function IsInsideParent(child, parent) {
   const childRect = child.getBoundingClientRect();
   const parentRect = parent.getBoundingClientRect();
