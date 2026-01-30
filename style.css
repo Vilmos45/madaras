@@ -28,6 +28,11 @@ main{
     background-color: powderblue;
 }
 
+#score{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 115%;
+}
+
 #bird{
     position: absolute;
     width: 3.6%;

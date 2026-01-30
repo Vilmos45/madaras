@@ -49,12 +49,17 @@ function IsInsideParent(child, parent) {
   );
 }
 
+function pauseGame() {
+  InGame = !InGame;
+  score.textContent = InGame ? TotalScore : "Paused";
+}
+
 addEventListener("keydown", function (e) {
-  if (e.key === "ArrowLeft") left();
-  if (e.key === "ArrowRight") right();
-  if (e.key === "ArrowUp") jump();
-  if (e.key === "ArrowDown") down();
-  if (e.key === "Enter") InGame = !InGame;
+  if (e.key === "ArrowLeft") InGame ? left() : null;
+  if (e.key === "ArrowRight") InGame ? right() : null;
+  if (e.key === "ArrowUp") InGame ? jump() : null;
+  if (e.key === "ArrowDown") InGame ? down() : null;
+  if (e.key === "Enter") pauseGame();
 });
 
 setInterval(() => {
