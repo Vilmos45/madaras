@@ -3,7 +3,7 @@ const GameScreen = document.getElementById("main_screen");
 const score = document.getElementById("score");
 let TotalScore = 0;
 
-let InGame = true;
+let InGame = false;
 let facing = 1;
 let velocityY = 0; 
 
@@ -15,6 +15,11 @@ function jump() {
 function BirdFall() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
   bird.style.top = (topVal + 6) + "px";
+}
+
+function down() {
+  let topVal = parseInt(getComputedStyle(bird).top) || 0;
+  bird.style.top = (topVal + 12) + "px";
 }
 
 function right() {
@@ -48,6 +53,8 @@ addEventListener("keydown", function (e) {
   if (e.key === "ArrowLeft") left();
   if (e.key === "ArrowRight") right();
   if (e.key === "ArrowUp") jump();
+  if (e.key === "ArrowDown") down();
+  if (e.key === "Enter") InGame = !InGame;
 });
 
 setInterval(() => {
@@ -60,5 +67,4 @@ setInterval(() => {
     TotalScore = TotalScore + 1;
     score.textContent = TotalScore;
   }
-
 }, 1000 / 24);
