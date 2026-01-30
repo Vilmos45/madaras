@@ -55,10 +55,10 @@ function pauseGame() {
 }
 
 addEventListener("keydown", function (e) {
-  if (e.key === "ArrowLeft" || e.key === "a") InGame ? left() : null;
-  if (e.key === "ArrowRight"|| e.key === "d") InGame ? right() : null;
-  if (e.key === "ArrowUp"|| e.key === "w") InGame ? jump() : null;
-  if (e.key === "ArrowDown"|| e.key === "s") InGame ? down() : null;
+  if (e.key === "ArrowLeft" || e.key === "a") (InGame) ? left() : null;
+  if (e.key === "ArrowRight"|| e.key === "d") (InGame) ? right() : null;
+  if (e.key === "ArrowUp"|| e.key === "w") (InGame) ? jump() : null;
+  if (e.key === "ArrowDown"|| e.key === "s") (InGame) ? down() : null;
   if (e.key === "Enter"|| e.key === " ") pauseGame();
 });
 
