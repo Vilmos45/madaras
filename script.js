@@ -119,7 +119,7 @@ RWP.forEach(value => {
   const cell = document.createElement("div");
   cell.classList.add("cell");
   if (value === 1) {
-    cell.classList.add("Fal_kozepso");
+    cell.classList.add("Fal");
   }
   rowDiv.appendChild(cell);
 });

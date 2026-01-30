@@ -63,7 +63,7 @@ footer{
     image-rendering: pixelated;
 }
 
-.Fal_kozepso {
+.Fal {
     background-image: url("src/Fal.svg");
     background-size: cover;       
     background-repeat: no-repeat; 
