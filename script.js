@@ -51,7 +51,6 @@ function left() {
   }
 }
 
-// Check if child is fully inside parent
 function IsInsideParent(child, parent) {
   const childRect = child.getBoundingClientRect();
   const parentRect = parent.getBoundingClientRect();
@@ -88,3 +87,39 @@ setInterval(() => {
     score.textContent = TotalScore;
   }
 }, 1000 / 25);
+
+//akadályok:minták,generálásuk a pályán, fal spriteok betöltése
+
+const Templates = Object.freeze({
+  1: Object.freeze([0, 1, 0, 1, 0]),
+  2: Object.freeze([1, 0, 1, 0, 1]),
+  3: Object.freeze([0, 0, 1, 0, 1]),
+  4: Object.freeze([1, 0, 1, 0, 0]),
+  5: Object.freeze([1, 1, 0, 1, 0]),
+  6: Object.freeze([0, 1, 0, 1, 1]),
+  7: Object.freeze([0, 1, 1, 0, 1]),
+  8: Object.freeze([1, 0, 0, 0, 1]),
+  9: Object.freeze([1, 1, 0, 1, 1]),
+  10: Object.freeze([0, 1, 1, 1, 0]),
+});
+//azért jó az Object.freeze, mert utána nem lehet átírni benne lévő objektumokat véletlen 
+
+function RandomWallPick()
+{
+  const keys = Object.keys(Templates);
+  const randomKey = keys[Math.floor(Math.random() * keys.length)];
+  return Templates[randomKey]; 
+}
+
+const RWP = RandomWallPick();
+
+const rowDiv = document.getElementById("row");
+
+RWP.forEach(value => {
+  const cell = document.createElement("div");
+  cell.classList.add("cell");
+  if (value === 1) {
+    cell.classList.add("Fal");
+  }
+  rowDiv.appendChild(cell);
+});

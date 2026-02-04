@@ -51,3 +51,23 @@ header{
 footer{
     text-align: center;
 }
+
+/**/
+
+#row {
+    display: flex;
+    margin-top: 20px;
+}
+
+.cell {
+    width: 64px;
+    height: 64px;
+    image-rendering: pixelated;
+}
+
+.Fal {
+    background-image: url("src/Fal.svg");
+    background-size: cover;       
+    background-repeat: no-repeat; 
+    background-position: center;  
+}
