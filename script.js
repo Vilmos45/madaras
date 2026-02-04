@@ -16,12 +16,18 @@ function jump() {
 }
 
 function BirdFall() {
+  const parentH = GameScreen.clientHeight;
+  const birdH = bird.offsetHeight;
+
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
-  bird.style.top = (topVal + 6) + "px";
-  if (!IsInsideParent(bird, GameScreen)) {
-    bird.style.top = (topVal) + "px";
+
+  if (birdH.bottom <= parentH.bottom) {
+    bird.style.top = parentH - birdH + "px";
+  } else {
+    bird.style.top = topVal + 6 + "px";
   }
 }
+
 
 function down() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
