@@ -9,53 +9,68 @@ let velocityY = 0;
 
 function jump() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
-  bird.style.top = (topVal - 48) + "px";
-  if (!IsInsideParent(bird, GameScreen)) {
-    bird.style.top = (topVal) + "px";
-  }
+  let newTop = topVal - 48;
+
+  const maxTop = GameScreen.clientHeight - bird.offsetHeight;
+  if (newTop > maxTop) //Valamilyen misztikus oknál fogva néha kicsúszik a madárka a képernyőről
+    newTop = maxTop;
+
+  bird.style.top = newTop + "px";
 }
 
 function BirdFall() {
-  const parentH = GameScreen.clientHeight;
-  const birdH = bird.offsetHeight;
+  const parentRect = GameScreen.getBoundingClientRect();
+  const birdRect = bird.getBoundingClientRect();
 
-  let topVal = parseInt(getComputedStyle(bird).top) || 0;
+  let newTop = birdRect.top - parentRect.top + 6;
 
-  if (birdH.bottom <= parentH.bottom) {
-    bird.style.top = parentH - birdH + "px";
-  } else {
-    bird.style.top = topVal + 6 + "px";
-  }
+  const maxTop = parentRect.height - birdRect.height;
+  if (newTop > maxTop) newTop = maxTop;
+
+  bird.style.top = newTop + "px";
 }
+
 
 
 function down() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
-  bird.style.top = (topVal + 12) + "px";
-  if (!IsInsideParent(bird, GameScreen)) {
-    bird.style.top = (topVal) + "px";
-  }
+  let newTop = topVal + 12;
+
+  const maxTop = GameScreen.clientHeight - bird.offsetHeight;
+  if (newTop > maxTop) //Ez jó, de a pályának van valami bordere, és az textúrahibát ad.
+    newTop = maxTop;
+
+  bird.style.top = newTop + "px";
 }
 
 function right() {
   facing = 1;
   bird.style.transform = "scaleX(1)";
+
   let leftVal = parseInt(getComputedStyle(bird).left) || 0;
-  bird.style.left = (leftVal + 12) + "px";
-  if (!IsInsideParent(bird, GameScreen)) {
-    bird.style.left = (leftVal) + "px";
-  }
+  let newLeft = leftVal + 12;
+
+  const max = GameScreen.clientWidth - bird.offsetWidth;
+  if (newLeft > max) //Amikor elérte a pályaa szélét, akkor valamiért nem esik tovább lefele a madárka.
+    newLeft = max;
+
+  bird.style.left = newLeft + "px";
 }
 
+
 function left() {
-  facing = - 1;
+  facing = -1;
   bird.style.transform = "scaleX(-1)";
+
   let leftVal = parseInt(getComputedStyle(bird).left) || 0;
-  bird.style.left = (leftVal - 12) + "px";
-  if (!IsInsideParent(bird, GameScreen)) {
-    bird.style.left = (leftVal) + "px";
-  }
+  let newLeft = leftVal - 12;
+
+  if (newLeft < 0) 
+    newLeft = 0;
+
+  bird.style.left = newLeft + "px";
 }
+
 
 function IsInsideParent(child, parent) {
   const childRect = child.getBoundingClientRect();
