@@ -30,8 +30,6 @@ function BirdFall() {
   bird.style.top = newTop + "px";
 }
 
-
-
 function down() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
   let newTop = topVal + 12;
@@ -70,7 +68,6 @@ function left() {
 
   bird.style.left = newLeft + "px";
 }
-
 
 function IsInsideParent(child, parent) {
   const childRect = child.getBoundingClientRect();
