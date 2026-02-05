@@ -9,11 +9,11 @@ let velocityY = 0;
 
 function jump() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
-  let newTop = topVal - 48;
+  let newTop = topVal - 28;
 
   const maxTop = GameScreen.clientHeight - bird.offsetHeight;
-  if (newTop > maxTop) //Valamilyen misztikus oknál fogva néha kicsúszik a madárka a képernyőről
-    newTop = maxTop;
+  if (newTop < 0) 
+    newTop = 0;
 
   bird.style.top = newTop + "px";
 }
@@ -49,7 +49,7 @@ function right() {
   let newLeft = leftVal + 12;
 
   const max = GameScreen.clientWidth - bird.offsetWidth;
-  if (newLeft > max) //Amikor elérte a pályaa szélét, akkor valamiért nem esik tovább lefele a madárka.
+  if (newLeft > max) //Amikor elérte a pálya szélét, akkor valamiért nem esik tovább lefele a madárka.
     newLeft = max;
 
   bird.style.left = newLeft + "px";
