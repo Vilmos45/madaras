@@ -184,3 +184,36 @@ setInterval(() => {
     score.textContent = TotalScore;
   }
 }, 1000 / 25);
+
+//kamera 
+
+const lineUpdater = document.createElement("div");
+lineUpdater.style.position = "absolute";
+lineUpdater.style.width = GameScreen.clientWidth + "px";
+lineUpdater.style.height = "1px";
+lineUpdater.style.backgroundColor = "red";
+lineUpdater.style.top = GameScreen.clientHeight/2 + "px";   
+
+GameScreen.appendChild(lineUpdater);
+
+function isTouching(a, b) {
+  const r1 = a.getBoundingClientRect();
+  const r2 = b.getBoundingClientRect();
+
+  return (
+    r1.left < r2.right &&
+    r1.right > r2.left &&
+    r1.top < r2.bottom &&
+    r1.bottom > r2.top
+  );
+}
+
+function gameLoop() {
+  if (isTouching(bird, lineUpdater)){
+    console.log("Line touched!");
+  }
+
+  requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
