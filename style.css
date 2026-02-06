@@ -26,6 +26,8 @@ main{
     height: 100%;
     width: 100%;
     background-color: powderblue;
+    margin: 0;
+    position: relative;
     /*cursor:crosshair;*/
 }
 
@@ -36,7 +38,8 @@ main{
 
 #bird{
     position: absolute;
-    width: 3.6%;
+    width: calc(var(--main-width) / 5);
+    height: calc(var(--main-width) / 5);
     z-index: 10;
 }
 
@@ -69,5 +72,7 @@ footer{
     background-image: url("src/Fal.svg");
     background-size: cover;       
     background-repeat: no-repeat; 
-    background-position: center;  
+    background-position: center;
+    width: calc(var(--main-width) / 5.5);
+    height: calc(var(--main-width) / 5.5);
 }
