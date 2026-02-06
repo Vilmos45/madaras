@@ -81,12 +81,31 @@ function pauseGame() {
 }
 
 addEventListener("keydown", function (e) {
-  if (e.key === "ArrowLeft" || e.key === "a") (InGame) ? left() : null;
-  if (e.key === "ArrowRight"|| e.key === "d") (InGame) ? right() : null;
-  if (e.key === "ArrowUp"|| e.key === "w") (InGame) ? jump() : null;
-  if (e.key === "ArrowDown"|| e.key === "s") (InGame) ? down() : null;
-  if (e.key === "Enter"|| e.key === " ") pauseGame();
-});
+  if (e.key === "ArrowLeft" || e.key === "a"){
+    e.preventDefault();
+    if (InGame)
+      left()
+  } 
+  if (e.key === "ArrowRight"|| e.key === "d"){
+    e.preventDefault();
+    if (InGame)
+      right()
+  }
+  if (e.key === "ArrowUp"|| e.key === "w") {
+    e.preventDefault();
+    if (InGame)
+      jump()
+  }
+  if (e.key === "ArrowDown"|| e.key === "s")  {
+    e.preventDefault();
+    if (InGame)
+      down()
+  };
+  if (e.key === "Enter"|| e.key === " ") {
+    e.preventDefault();
+    pauseGame();
+  }
+}, true);
 
 //akadályok:minták, generálásuk a pályán, fal spriteok betöltése
 
@@ -114,7 +133,7 @@ function RandomWallPick()
 function FirstWallGeneration(){
   const RWP = RandomWallPick();
 
-  const rowDiv = document.getElementById("row");
+  const rowDiv = document.getElementById("row1");
 
   RWP.forEach(value => {
     const cell = document.createElement("div");
@@ -126,9 +145,9 @@ function FirstWallGeneration(){
 }
 
 function WallGeneration(){
-  for (let i = 0; i < 3; i++) {
+  for (let i = 1; i < 4; i++) {
     const RWP = RandomWallPick();
-    const rowDiv = document.getElementById("row");
+    const rowDiv = document.getElementById("row" + i);
 
     RWP.forEach(value => {
       const cell = document.createElement("div");
