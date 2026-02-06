@@ -9,7 +9,7 @@ let velocityY = 0;
 
 function jump() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
-  let newTop = topVal - 28;
+  let newTop = topVal - 35;
 
   const maxTop = GameScreen.clientHeight - bird.offsetHeight;
   if (newTop < 0) 
@@ -31,14 +31,8 @@ function BirdFall() {
 }
 
 function down() {
-  let topVal = parseInt(getComputedStyle(bird).top) || 0;
-  let newTop = topVal + 12;
-
-  const maxTop = GameScreen.clientHeight - bird.offsetHeight;
-  if (newTop > maxTop) //Ez jó, de a pályának van valami bordere, és az textúrahibát ad.
-    newTop = maxTop;
-
-  bird.style.top = newTop + "px";
+  BirdFall();
+  BirdFall();
 }
 
 function right() {
@@ -48,7 +42,7 @@ function right() {
   let leftVal = parseInt(getComputedStyle(bird).left) || 0;
   let newLeft = leftVal + 12;
 
-  const max = GameScreen.clientWidth - bird.offsetWidth;
+  const max = GameScreen.clientWidth - bird.offsetWidth - 1;
   if (newLeft > max) //Amikor elérte a pálya szélét, akkor valamiért nem esik tovább lefele a madárka.
     newLeft = max;
 
@@ -75,9 +69,9 @@ function IsInsideParent(child, parent) {
 
   return (
     childRect.left >= parentRect.left &&
-    childRect.right <= parentRect.right &&
+    childRect.right < parentRect.right &&
     childRect.top >= parentRect.top &&
-    childRect.bottom <= parentRect.bottom
+    childRect.bottom < parentRect.bottom
   );
 }
 
@@ -94,19 +88,7 @@ addEventListener("keydown", function (e) {
   if (e.key === "Enter"|| e.key === " ") pauseGame();
 });
 
-setInterval(() => {
-  if (InGame) {
-    if (!IsInsideParent(bird, GameScreen)) {
-      score.textContent = "Gameover";
-    } else {
-      BirdFall();
-    }
-    TotalScore = TotalScore + 1;
-    score.textContent = TotalScore;
-  }
-}, 1000 / 25);
-
-//akadályok:minták,generálásuk a pályán, fal spriteok betöltése
+//akadályok:minták, generálásuk a pályán, fal spriteok betöltése
 
 const Templates = Object.freeze({
   1: Object.freeze([0, 1, 0, 1, 0]),
@@ -129,15 +111,57 @@ function RandomWallPick()
   return Templates[randomKey]; 
 }
 
-const RWP = RandomWallPick();
+function FirstWallGeneration(){
+  const RWP = RandomWallPick();
 
-const rowDiv = document.getElementById("row");
+  const rowDiv = document.getElementById("row");
 
-RWP.forEach(value => {
-  const cell = document.createElement("div");
-  cell.classList.add("cell");
-  if (value === 1) {
-    cell.classList.add("Fal");
+  RWP.forEach(value => {
+    const cell = document.createElement("div");
+    cell.classList.add("cell");
+    if (value === 1) 
+      cell.classList.add("Fal");
+    rowDiv.appendChild(cell);
+  });
+}
+
+function WallGeneration(){
+  for (let i = 0; i < 3; i++) {
+    const RWP = RandomWallPick();
+    const rowDiv = document.getElementById("row");
+
+    RWP.forEach(value => {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      if (value === 1) 
+        cell.classList.add("Fal");
+      rowDiv.appendChild(cell);
+    });
   }
-  rowDiv.appendChild(cell);
-});
+}
+
+FirstWallGeneration();
+
+function WallDeletion(){
+  let cells =  document.getElementsByClassName("Fal");
+  cells += document.getElementsByClassName("cell");
+  cells.forEach(cell => {
+    if(!IsInsideParent(cell, GameScreen)){
+      cell.remove();
+    }
+  });
+}
+
+setInterval(() => {
+  if (InGame) {
+    if (!IsInsideParent(bird, GameScreen)) {
+      pauseGame();
+      score.textContent = "Gameover";
+      return;
+    } else {
+      BirdFall();
+    }
+    TotalScore = TotalScore + 1;
+    score.textContent = TotalScore;
+  }
+}, 1000 / 25);
