@@ -28,10 +28,6 @@ main{
     height: 100%;
     width: 100%;
     background-color: powderblue;
-    margin: 0;
-    border: 0;
-    padding: 0;
-    position: relative;
     /*cursor:crosshair;*/
 }
 
@@ -42,9 +38,7 @@ main{
 
 #bird{
     position: absolute;
-    width: calc(var(--main-width) / 5);
-    height: calc(var(--main-width) / 5);
-    z-index: 10;
+    width: 3.6%;
 }
 
 /*madárka kissé dagadt, ezért olyan vastag mint a pálya 1/5-de */
@@ -76,7 +70,5 @@ footer{
     background-image: url("src/Fal.svg");
     background-size: cover;       
     background-repeat: no-repeat; 
-    background-position: center;
-    width: calc(var(--main-width) / 5.5);
-    height: calc(var(--main-width) / 5.5);
+    background-position: center;  
 }

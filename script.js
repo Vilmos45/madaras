@@ -7,6 +7,8 @@ let InGame = false;
 let facing = 1;
 let velocityY = 0; 
 
+bird.style.top = GameScreen.clientHeight + "px";
+
 function jump() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
   let newTop = topVal - 35;
@@ -19,12 +21,10 @@ function jump() {
 }
 
 function BirdFall() {
-  const parentRect = GameScreen.getBoundingClientRect();
-  const birdRect = bird.getBoundingClientRect();
+  let topVal = parseInt(getComputedStyle(bird).top) || 0;
+  let newTop = topVal + 6;
 
-  let newTop = birdRect.top - parentRect.top + 6;
-
-  const maxTop = parentRect.height - birdRect.height;
+  const maxTop = GameScreen.clientHeight - bird.offsetHeight;
   if (newTop > maxTop) newTop = maxTop;
 
   bird.style.top = newTop + "px";

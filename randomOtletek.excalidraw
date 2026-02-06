@@ -1541,6 +1541,81 @@
       "originalText": "todo list:\nelőre generálása a pályának\nkamera mozgása\n(jobb/kellemesebb fizika?(I mean a mostani is jó))\nháttér elkészítése(Maxim ez meg akarja csinálni:))\nháttérzene???(Ha akarjátok)",
       "autoResize": true,
       "lineHeight": 1.25
+    },
+    {
+      "id": "6UyNB2lkBxgdLYs3FxXuG",
+      "type": "rectangle",
+      "x": -632.1716314857558,
+      "y": 406.80435242496685,
+      "width": 212.96165910516027,
+      "height": 131.63703018941874,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "ai",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 824246249,
+      "version": 82,
+      "versionNonce": 1386126793,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1770388179582,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "tAvCt8Xtz53t_2OtKBFVa",
+      "type": "line",
+      "x": 258.484950035571,
+      "y": 762.0428872846151,
+      "width": 332.6105513093474,
+      "height": 2.6163955358961175,
+      "angle": 0,
+      "strokeColor": "#e03131",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "aj",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 202989063,
+      "version": 94,
+      "versionNonce": 1894238439,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1770389584457,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          332.6105513093474,
+          2.6163955358961175
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": null,
+      "endBinding": null,
+      "startArrowhead": null,
+      "endArrowhead": null
     }
   ],
   "appState": {
