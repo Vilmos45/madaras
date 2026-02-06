@@ -7,9 +7,11 @@ let InGame = false;
 let facing = 1;
 let velocityY = 0; 
 
+bird.style.top = GameScreen.clientHeight + "px";
+
 function jump() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
-  let newTop = topVal - 28;
+  let newTop = topVal - 35;
 
   const maxTop = GameScreen.clientHeight - bird.offsetHeight;
   if (newTop < 0) 
@@ -43,7 +45,7 @@ function right() {
   let leftVal = parseInt(getComputedStyle(bird).left) || 0;
   let newLeft = leftVal + 12;
 
-  const max = GameScreen.clientWidth - bird.offsetWidth;
+  const max = GameScreen.clientWidth - bird.offsetWidth - 1;
   if (newLeft > max) //Amikor elérte a pálya szélét, akkor valamiért nem esik tovább lefele a madárka.
     newLeft = max;
 
@@ -70,9 +72,9 @@ function IsInsideParent(child, parent) {
 
   return (
     childRect.left >= parentRect.left &&
-    childRect.right <= parentRect.right &&
+    childRect.right < parentRect.right &&
     childRect.top >= parentRect.top &&
-    childRect.bottom <= parentRect.bottom
+    childRect.bottom < parentRect.bottom
   );
 }
 
@@ -82,26 +84,33 @@ function pauseGame() {
 }
 
 addEventListener("keydown", function (e) {
-  if (e.key === "ArrowLeft" || e.key === "a") (InGame) ? left() : null;
-  if (e.key === "ArrowRight"|| e.key === "d") (InGame) ? right() : null;
-  if (e.key === "ArrowUp"|| e.key === "w") (InGame) ? jump() : null;
-  if (e.key === "ArrowDown"|| e.key === "s") (InGame) ? down() : null;
-  if (e.key === "Enter"|| e.key === " ") pauseGame();
-});
-
-setInterval(() => {
-  if (InGame) {
-    if (!IsInsideParent(bird, GameScreen)) {
-      score.textContent = "Gameover";
-    } else {
-      BirdFall();
-    }
-    TotalScore = TotalScore + 1;
-    score.textContent = TotalScore;
+  if (e.key === "ArrowLeft" || e.key === "a"){
+    e.preventDefault();
+    if (InGame)
+      left()
+  } 
+  if (e.key === "ArrowRight"|| e.key === "d"){
+    e.preventDefault();
+    if (InGame)
+      right()
   }
-}, 1000 / 25);
+  if (e.key === "ArrowUp"|| e.key === "w") {
+    e.preventDefault();
+    if (InGame)
+      jump()
+  }
+  if (e.key === "ArrowDown"|| e.key === "s")  {
+    e.preventDefault();
+    if (InGame)
+      down()
+  };
+  if (e.key === "Enter"|| e.key === " ") {
+    e.preventDefault();
+    pauseGame();
+  }
+}, true);
 
-//akadályok:minták,generálásuk a pályán, fal spriteok betöltése
+//akadályok:minták, generálásuk a pályán, fal spriteok betöltése
 
 const Templates = Object.freeze({
   1: Object.freeze([0, 1, 0, 1, 0]),
@@ -135,6 +144,21 @@ function WallGeneration(){
       if (value === 1) 
         cell.classList.add("Fal");
       rowDiv.appendChild(cell);
+  });
+}
+}
+
+function WallGeneration(){
+  for (let i = 1; i < 4; i++) {
+    const RWP = RandomWallPick();
+    const rowDiv = document.getElementById("row" + i);
+
+    RWP.forEach(value => {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      if (value === 1) 
+        cell.classList.add("Fal");
+      rowDiv.appendChild(cell);
     });
   }
 }
@@ -151,15 +175,11 @@ function WallDeletion(){
   });
 }
 
-function Gameover(){
-  pauseGame();
-  score.textContent = "Gameover";
-}
-
 setInterval(() => {
   if (InGame) {
     if (!IsInsideParent(bird, GameScreen)) {
-      Gameover();
+      pauseGame();
+      score.textContent = "Gameover";
       return;
     } else {
       BirdFall();
@@ -168,3 +188,36 @@ setInterval(() => {
     score.textContent = TotalScore;
   }
 }, 1000 / 25);
+
+//kamera 
+
+const lineUpdater = document.createElement("div");
+lineUpdater.style.position = "absolute";
+lineUpdater.style.width = GameScreen.clientWidth + "px";
+lineUpdater.style.height = "1px";
+lineUpdater.style.backgroundColor = "red";
+lineUpdater.style.top = GameScreen.clientHeight/2 + "px";   
+
+GameScreen.appendChild(lineUpdater);
+
+function isTouching(a, b) {
+  const r1 = a.getBoundingClientRect();
+  const r2 = b.getBoundingClientRect();
+
+  return (
+    r1.left < r2.right &&
+    r1.right > r2.left &&
+    r1.top < r2.bottom &&
+    r1.bottom > r2.top
+  );
+}
+
+function gameLoop() {
+  if (isTouching(bird, lineUpdater)){
+    console.log("Line touched!");
+  }
+
+  requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
