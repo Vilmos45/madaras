@@ -7,6 +7,8 @@ let InGame = false;
 let facing = 1;
 let velocityY = 0; 
 
+bird.style.top = GameScreen.clientHeight + "px";
+
 function jump() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
   let newTop = topVal - 28;
@@ -19,12 +21,10 @@ function jump() {
 }
 
 function BirdFall() {
-  const parentRect = GameScreen.getBoundingClientRect();
-  const birdRect = bird.getBoundingClientRect();
+  let topVal = parseInt(getComputedStyle(bird).top) || 0;
+  let newTop = topVal + 6;
 
-  let newTop = birdRect.top - parentRect.top + 6;
-
-  const maxTop = parentRect.height - birdRect.height;
+  const maxTop = GameScreen.clientHeight - bird.offsetHeight;
   if (newTop > maxTop) newTop = maxTop;
 
   bird.style.top = newTop + "px";
@@ -141,3 +141,39 @@ RWP.forEach(value => {
   }
   rowDiv.appendChild(cell);
 });
+
+//kamera 
+
+const lineUpdater = document.createElement("div");
+lineUpdater.style.position = "absolute";
+lineUpdater.style.width = GameScreen.clientWidth + "px";
+lineUpdater.style.height = "1px";
+lineUpdater.style.backgroundColor = "red";
+lineUpdater.style.top = GameScreen.clientHeight/2 + "px";   
+
+GameScreen.appendChild(lineUpdater);
+
+function isTouching(a, b) {
+  const r1 = a.getBoundingClientRect();
+  const r2 = b.getBoundingClientRect();
+
+  return (
+    r1.left < r2.right &&
+    r1.right > r2.left &&
+    r1.top < r2.bottom &&
+    r1.bottom > r2.top
+  );
+}
+
+function gameLoop() {
+  if (isTouching(bird, lineUpdater)){
+    console.log("Line touched!");
+  }
+
+  requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+
+
+
