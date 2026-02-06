@@ -5,6 +5,8 @@
 
 *{
     box-sizing: border-box;
+    overscroll-behavior: none;
+    overflow: hidden;
 }
 
 body{
@@ -53,7 +55,7 @@ footer{
 
 /**/
 
-#row {
+.obstacle {
     display: flex;
     margin-top: 20px;
 }
