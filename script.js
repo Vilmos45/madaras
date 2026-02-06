@@ -23,22 +23,17 @@ function BirdFall() {
   const birdRect = bird.getBoundingClientRect();
 
   let newTop = birdRect.top - parentRect.top + 6;
-
-  const maxTop = parentRect.height - birdRect.height;
-  if (newTop > maxTop) newTop = maxTop;
-
+  
   bird.style.top = newTop + "px";
+  const maxTop = parentRect.height - birdRect.height;
+  if (newTop <= maxTop) 
+    newTop = maxTop;
+
 }
 
 function down() {
-  let topVal = parseInt(getComputedStyle(bird).top) || 0;
-  let newTop = topVal + 12;
-
-  const maxTop = GameScreen.clientHeight - bird.offsetHeight;
-  if (newTop > maxTop) //Ez jó, de a pályának van valami bordere, és az textúrahibát ad.
-    newTop = maxTop;
-
-  bird.style.top = newTop + "px";
+  BirdFall();
+  BirdFall();
 }
 
 function right() {
@@ -129,15 +124,47 @@ function RandomWallPick()
   return Templates[randomKey]; 
 }
 
-const RWP = RandomWallPick();
+function WallGeneration(){
+  for (let i = 1; i < 4; i++) {
+    const RWP = RandomWallPick();
+    const rowDiv = document.getElementById("row" + i);
 
-const rowDiv = document.getElementById("row");
-
-RWP.forEach(value => {
-  const cell = document.createElement("div");
-  cell.classList.add("cell");
-  if (value === 1) {
-    cell.classList.add("Fal");
+    RWP.forEach(value => {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      if (value === 1) 
+        cell.classList.add("Fal");
+      rowDiv.appendChild(cell);
+    });
   }
-  rowDiv.appendChild(cell);
-});
+}
+
+FirstWallGeneration();
+
+function WallDeletion(){
+  let cells =  document.getElementsByClassName("Fal");
+  cells += document.getElementsByClassName("cell");
+  cells.forEach(cell => {
+    if(!IsInsideParent(cell, GameScreen)){
+      cell.remove();
+    }
+  });
+}
+
+function Gameover(){
+  pauseGame();
+  score.textContent = "Gameover";
+}
+
+setInterval(() => {
+  if (InGame) {
+    if (!IsInsideParent(bird, GameScreen)) {
+      Gameover();
+      return;
+    } else {
+      BirdFall();
+    }
+    TotalScore = TotalScore + 1;
+    score.textContent = TotalScore;
+  }
+}, 1000 / 25);
