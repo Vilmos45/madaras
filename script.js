@@ -90,15 +90,20 @@ function pauseGame() {
   score.textContent = InGame ? TotalScore : "Paused";
 }
 
+function gameover(){
+  pauseGame();
+  score.textContent = "Gameover";
+  console.log("Gameover")
+}
+
 addEventListener("keydown", function (e) {
   e.preventDefault();
-  if (e.key === "Enter" || e.key === " ") pauseGame();
+  if (e.key === "Enter" || e.key === " ") pauseGame(); //kéne egy gameover változó, hogy gameoverből, ne azt írja, hogy Game Paused
   if (!InGame) return;
   if (e.key === "ArrowLeft" || e.key === "a") left()
   if (e.key === "ArrowRight"|| e.key === "d") right()
   if (e.key === "ArrowUp"|| e.key === "w") jump()
   if (e.key === "ArrowDown"|| e.key === "s") down()
-  
 }, true);
 
 //akadályok:minták, generálásuk a pályán, fal spriteok betöltése
@@ -135,7 +140,6 @@ function FirstWallGeneration(){
       cell.classList.add("Fal");
     rowDiv.appendChild(cell);
   });
-
 }
 
 function WallGeneration(){
@@ -166,9 +170,7 @@ function WallDeletion(){
 setInterval(() => {
   if (InGame) {
     if ((!IsInsideParent(bird, GameScreen)) || hitsWall()) {
-      pauseGame();
-      score.textContent = "Gameover";
-      console.log("Gameover")
+      gameover();
       return;
     } else {
       BirdFall();
