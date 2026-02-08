@@ -25,9 +25,10 @@ main{
 
 #main_screen{
     display: block;
-    height: 100%;
-    width: 100%;
+    height: var(--main-height);
+    width: var(--main-width);
     background-color: powderblue;
+    position: relative;
     /*cursor:crosshair;*/
 }
 
@@ -38,19 +39,25 @@ main{
 
 #bird{
     position: absolute;
-    width: 3.6%;
+    width: calc(var(--main-width) / 6);
 }
 
 /*madárka kissé dagadt, ezért olyan vastag mint a pálya 1/5-de */
 
 header{
     display: block;
-    width: 14%;
-    margin: auto 25%;
+    display: grid;
 }
 
 footer{
     text-align: center;
+}
+
+.textInSite{
+    width: calc(var(--main-width) / 1.25);
+    align-self: center;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 /**/
@@ -61,8 +68,9 @@ footer{
 }
 
 .cell {
-    width: 64px;
-    height: 64px;
+    position:absolute;
+    width: calc(var(--main-width) / 5);
+    height: calc(var(--main-width) / 5);
     image-rendering: pixelated;
 }
 

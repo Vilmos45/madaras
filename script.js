@@ -7,7 +7,9 @@ let InGame = false;
 let facing = 1;
 let velocityY = 0; 
 
-bird.style.top = GameScreen.clientHeight + "px";
+bird.style.top = (GameScreen.height - bird.offsetHeight) + "px";
+bird.style.left = GameScreen.offsetWidth/2 + "px";
+
 
 function jump() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
@@ -21,17 +23,15 @@ function jump() {
 }
 
 function BirdFall() {
-  const parentRect = GameScreen.getBoundingClientRect();
-  const birdRect = bird.getBoundingClientRect();
+  let topVal = parseInt(getComputedStyle(bird).top) || 0;
+  let newTop = topVal + 6;
 
-  let newTop = birdRect.top - parentRect.top + 6;
-  
+  const maxTop = GameScreen.clientHeight - bird.offsetHeight;
+  if (newTop > maxTop) newTop = maxTop;
+
   bird.style.top = newTop + "px";
-  const maxTop = parentRect.height - birdRect.height;
-  if (newTop <= maxTop) 
-    newTop = maxTop;
-
 }
+
 
 function down() {
   BirdFall();
@@ -52,7 +52,6 @@ function right() {
   bird.style.left = newLeft + "px";
 }
 
-
 function left() {
   facing = -1;
   bird.style.transform = "scaleX(-1)";
@@ -64,6 +63,14 @@ function left() {
     newLeft = 0;
 
   bird.style.left = newLeft + "px";
+}
+
+function hitsWall() {
+  const walls = document.querySelectorAll(".Fal");
+  for (const w of walls) {
+    if (isTouching(bird, w)) return true;
+  }
+  return false;
 }
 
 function IsInsideParent(child, parent) {
@@ -84,30 +91,14 @@ function pauseGame() {
 }
 
 addEventListener("keydown", function (e) {
-  if (e.key === "ArrowLeft" || e.key === "a"){
-    e.preventDefault();
-    if (InGame)
-      left()
-  } 
-  if (e.key === "ArrowRight"|| e.key === "d"){
-    e.preventDefault();
-    if (InGame)
-      right()
-  }
-  if (e.key === "ArrowUp"|| e.key === "w") {
-    e.preventDefault();
-    if (InGame)
-      jump()
-  }
-  if (e.key === "ArrowDown"|| e.key === "s")  {
-    e.preventDefault();
-    if (InGame)
-      down()
-  };
-  if (e.key === "Enter"|| e.key === " ") {
-    e.preventDefault();
-    pauseGame();
-  }
+  e.preventDefault();
+  if (e.key === "Enter" || e.key === " ") pauseGame();
+  if (!InGame) return;
+  if (e.key === "ArrowLeft" || e.key === "a") left()
+  if (e.key === "ArrowRight"|| e.key === "d") right()
+  if (e.key === "ArrowUp"|| e.key === "w") jump()
+  if (e.key === "ArrowDown"|| e.key === "s") down()
+  
 }, true);
 
 //akadályok:minták, generálásuk a pályán, fal spriteok betöltése
@@ -133,26 +124,25 @@ function RandomWallPick()
   return Templates[randomKey]; 
 }
 
-function WallGeneration(){
-  for (let i = 1; i < 4; i++) {
-    const RWP = RandomWallPick();
-    const rowDiv = document.getElementById("row" + i);
+function FirstWallGeneration(){
+  const RWP = RandomWallPick();
+  const rowDiv = document.getElementById("row1");
 
-    RWP.forEach(value => {
-      const cell = document.createElement("div");
-      cell.classList.add("cell");
-      if (value === 1) 
-        cell.classList.add("Fal");
-      rowDiv.appendChild(cell);
+  RWP.forEach(value => {
+    const cell = document.createElement("div");
+    cell.classList.add("cell");
+    if (value === 1) 
+      cell.classList.add("Fal");
+    rowDiv.appendChild(cell);
   });
-}
+
 }
 
 function WallGeneration(){
   for (let i = 1; i < 4; i++) {
     const RWP = RandomWallPick();
     const rowDiv = document.getElementById("row" + i);
-
+    rowDiv.innerHTML = "";
     RWP.forEach(value => {
       const cell = document.createElement("div");
       cell.classList.add("cell");
@@ -166,23 +156,23 @@ function WallGeneration(){
 FirstWallGeneration();
 
 function WallDeletion(){
-  let cells =  document.getElementsByClassName("Fal");
-  cells += document.getElementsByClassName("cell");
+  const cells = document.querySelectorAll(".cell, .Fal");
   cells.forEach(cell => {
-    if(!IsInsideParent(cell, GameScreen)){
-      cell.remove();
-    }
+    if (!IsInsideParent(cell, GameScreen)) cell.remove();
   });
 }
 
+
 setInterval(() => {
   if (InGame) {
-    if (!IsInsideParent(bird, GameScreen)) {
+    if ((!IsInsideParent(bird, GameScreen)) || hitsWall()) {
       pauseGame();
       score.textContent = "Gameover";
+      console.log("Gameover")
       return;
     } else {
       BirdFall();
+      //gameLoop();
     }
     TotalScore = TotalScore + 1;
     score.textContent = TotalScore;
@@ -220,4 +210,4 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
-gameLoop();
+console.info("Game started succesfully...")
