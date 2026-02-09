@@ -1,13 +1,14 @@
 const bird = document.getElementById("bird");
 const GameScreen = document.getElementById("main_screen");
 const score = document.getElementById("score");
-let TotalScore = 0;
+let TotalScore = 0;//kéne egy retry gomb
 
 let InGame = false;
+let lost = false;
 let facing = 1;
 let velocityY = 0; 
 
-bird.style.top = (GameScreen.height - bird.offsetHeight) + "px";
+bird.style.top = GameScreen.offsetHeight/2 + "px";
 bird.style.left = GameScreen.offsetWidth/2 + "px";
 
 
@@ -92,13 +93,15 @@ function pauseGame() {
 
 function gameover(){
   pauseGame();
-  score.textContent = "Gameover";
-  console.log("Gameover")
+  lost = !lost;
+  score.textContent = InGame ? TotalScore : "Gameover";
+  console.log(InGame ? "New game started..." : "Gameover");
 }
 
 addEventListener("keydown", function (e) {
   e.preventDefault();
-  if (e.key === "Enter" || e.key === " ") pauseGame(); //kéne egy gameover változó, hogy gameoverből, ne azt írja, hogy Game Paused
+  if (lost) return;
+  if (e.key === "Enter" || e.key === " ") pauseGame();
   if (!InGame) return;
   if (e.key === "ArrowLeft" || e.key === "a") left()
   if (e.key === "ArrowRight"|| e.key === "d") right()
@@ -183,12 +186,7 @@ setInterval(() => {
 
 //kamera 
 
-const lineUpdater = document.createElement("div");
-lineUpdater.style.position = "absolute";
-lineUpdater.style.width = GameScreen.clientWidth + "px";
-lineUpdater.style.height = "1px";
-lineUpdater.style.backgroundColor = "red";
-lineUpdater.style.top = GameScreen.clientHeight/2 + "px";   
+const lineUpdater = document.getElementById("lineUp");
 
 GameScreen.appendChild(lineUpdater);
 

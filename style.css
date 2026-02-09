@@ -80,3 +80,18 @@ footer{
     background-repeat: no-repeat; 
     background-position: center;  
 }
+
+.line{
+    position: absolute;
+    width: var(--main-width);
+    height: 1px;
+    background-color: red;
+}
+
+#lineUp{
+    top: calc(var(--main-height) / 3);
+}
+
+#lineDown{
+    top: calc(var(--main-height) / 1.5);
+}
