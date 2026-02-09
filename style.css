@@ -23,6 +23,16 @@ main{
     width: var(--main-width);
 }
 
+#retry{
+    height: calc(var(--main-width) / 5);
+    width: calc(var(--main-width) / 5);
+    background-color: coral;
+    text-align: center;
+    align-content: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-size:smaller;
+}
+
 #main_screen{
     display: block;
     height: var(--main-height);
@@ -45,8 +55,7 @@ main{
 /*madárka kissé dagadt, ezért olyan vastag mint a pálya 1/5-de */
 
 header{
-    display: block;
-    display: grid;
+    display: grid block;
 }
 
 footer{

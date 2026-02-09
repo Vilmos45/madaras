@@ -1,6 +1,7 @@
 const bird = document.getElementById("bird");
 const GameScreen = document.getElementById("main_screen");
 const score = document.getElementById("score");
+const RetryButton = document.getElementById("retry");
 let TotalScore = 0;//kéne egy retry gomb
 
 let InGame = false;
@@ -8,8 +9,8 @@ let lost = false;
 let facing = 1;
 let velocityY = 0; 
 
-bird.style.top = GameScreen.offsetHeight/2 + "px";
-bird.style.left = GameScreen.offsetWidth/2 + "px";
+bird.style.top = (GameScreen.clientHeight - bird.offsetHeight)/2 + "px";
+bird.style.left = (GameScreen.clientWidth - bird.offsetWidth)/2 + "px";
 
 
 function jump() {
@@ -95,7 +96,6 @@ function gameover(){
   pauseGame();
   lost = !lost;
   score.textContent = InGame ? TotalScore : "Gameover";
-  console.log(InGame ? "New game started..." : "Gameover");
 }
 
 addEventListener("keydown", function (e) {
@@ -108,6 +108,18 @@ addEventListener("keydown", function (e) {
   if (e.key === "ArrowUp"|| e.key === "w") jump()
   if (e.key === "ArrowDown"|| e.key === "s") down()
 }, true);
+
+RetryButton.addEventListener("click", function() {
+  lost = false;
+  InGame = false;
+  TotalScore = 0;
+
+  bird.style.top = GameScreen.offsetHeight/2 + "px";
+  bird.style.left = GameScreen.offsetWidth/2 + "px";
+
+  score.textContent = "Press SPACE to play";
+});
+
 
 //akadályok:minták, generálásuk a pályán, fal spriteok betöltése
 
