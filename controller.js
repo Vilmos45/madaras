@@ -2,7 +2,7 @@ const bird = document.getElementById("bird");
 const GameScreen = document.getElementById("main_screen");
 const score = document.getElementById("score");
 const RetryButton = document.getElementById("retry");
-let TotalScore = 0;//kéne egy retry gomb
+let TotalScore = 0; 
 
 let InGame = false;
 let lost = false;
@@ -98,16 +98,7 @@ function gameover(){
   score.textContent = InGame ? TotalScore : "Gameover";
 }
 
-addEventListener("keydown", function (e) {
-  e.preventDefault();
-  if (lost) return;
-  if (e.key === "Enter" || e.key === " ") pauseGame();
-  if (!InGame) return;
-  if (e.key === "ArrowLeft" || e.key === "a") left()
-  if (e.key === "ArrowRight"|| e.key === "d") right()
-  if (e.key === "ArrowUp"|| e.key === "w") jump()
-  if (e.key === "ArrowDown"|| e.key === "s") down()
-}, true);
+
 
 RetryButton.addEventListener("click", function() {
   lost = false;
@@ -181,25 +172,6 @@ function WallDeletion(){
   });
 }
 
-
-setInterval(() => {
-  if (InGame) {
-    if ((!IsInsideParent(bird, GameScreen)) || hitsWall()) {
-      gameover();
-      return;
-    } else {
-      BirdFall();
-      //gameLoop();
-    }
-    TotalScore = TotalScore + 1;
-    score.textContent = TotalScore;
-  }
-}, 1000 / 25);
-
-//kamera 
-
-const lineUpdater = document.getElementById("lineUp");
-
 function isTouching(a, b) {
   const r1 = a.getBoundingClientRect();
   const r2 = b.getBoundingClientRect();
@@ -212,12 +184,113 @@ function isTouching(a, b) {
   );
 }
 
-function gameLoop() {
-  if (isTouching(bird, lineUpdater)){
-    console.log("Line touched!");
-  }
 
-  requestAnimationFrame(gameLoop);
+setInterval(() => {
+  if (InGame) {
+    if ((!IsInsideParent(bird, GameScreen)) || hitsWall()) {
+      gameover();
+      return;
+    } 
+    BirdFall();
+    ControllerEvents();
+    
+    TotalScore = TotalScore + 1;
+    score.textContent = TotalScore;
+  }
+}, 1000 / 25);
+
+addEventListener("keydown", function (e) {
+  e.preventDefault();
+  if (lost) return;
+  if (e.key === "Enter" || e.key === " ") pauseGame();
+  if (!InGame) return;
+  if (e.key === "ArrowLeft" || e.key === "a") left()
+  if (e.key === "ArrowRight"|| e.key === "d") right()
+  if (e.key === "ArrowUp"|| e.key === "w") jump()
+  if (e.key === "ArrowDown"|| e.key === "s") down()
+}, true);
+
+window.addEventListener("gamepadconnected", (e) => {
+  console.log(
+    `Gamepad connected at index ${e.gamepad.index}: ${e.gamepad.id}. ` +
+    `${e.gamepad.buttons.length} buttons, ${e.gamepad.axes.length} axes.`);
+});
+
+window.addEventListener("gamepadconnected", e => gamepadAPI.connect(e));
+window.addEventListener("gamepaddisconnected", e => gamepadAPI.disconnect(e));
+
+function ControllerEvents(){
+  if (!gamepadAPI.controller) return;
+
+  if (gamepadAPI.buttonPressed("Start")) pauseGame();
+
+  if (gamepadAPI.axesStatus[1] > 0.4 || gamepadAPI.buttonPressed("A")) jump();
+  if (gamepadAPI.axesStatus[1] < -0.4) down();
+  if (gamepadAPI.axesStatus[0] > 0.4) right();
+  if (gamepadAPI.axesStatus[0] < -0.4) left();
 }
 
-console.info("Game started succesfully...")
+
+const gamepadAPI = {
+  buttonsStatus: [],
+  buttonsCache: [],
+  axesStatus: [],
+  controller: null,
+  turbo: false,
+
+  buttons: [
+    "A","B","X","Y",
+    "LB","RB","LT","RT",
+    "Back","Start",
+    "LeftStickPress","RightStickPress",
+    "DPad-Up","DPad-Down","DPad-Left","DPad-Right",
+    "Home"
+  ],
+
+  connect(evt) {
+    gamepadAPI.controller = evt.gamepad;
+    gamepadAPI.turbo = true;
+    console.log("Gamepad connected.");
+  },
+  disconnect(evt) {
+    gamepadAPI.turbo = false;
+    delete gamepadAPI.controller;
+    console.log("Gamepad disconnected.");
+  },
+  update() {
+  const pads = navigator.getGamepads();
+  gamepadAPI.controller = pads[0];
+
+    gamepadAPI.buttonsCache = [];
+    for (let k = 0; k < gamepadAPI.buttonsStatus.length; k++) {
+      gamepadAPI.buttonsCache[k] = gamepadAPI.buttonsStatus[k];
+    }
+    gamepadAPI.buttonsStatus = [];
+    const c = gamepadAPI.controller || {};
+    const pressed = [];
+    if (c.buttons) {
+      for (let b = 0; b < c.buttons.length; b++) {
+        if (c.buttons[b].pressed) {
+          pressed.push(gamepadAPI.buttons[b]);
+        }
+      }
+    }
+    const axes = [];
+    if (c.axes) {
+      for (const ax of c.axes) {
+        axes.push(Number(ax.toFixed(2)));
+      }
+    }
+    gamepadAPI.axesStatus = axes;
+    gamepadAPI.buttonsStatus = pressed;
+
+    // Return buttons for debugging purposes
+    return pressed;
+  },
+  buttonPressed(button, hold=false) {
+  let newPress = gamepadAPI.buttonsStatus.includes(button);
+  if (!hold && gamepadAPI.buttonsCache.includes(button)) 
+    newPress = false;
+  return newPress;
+  }
+};
