@@ -210,22 +210,17 @@ addEventListener("keydown", function (e) {
   if (e.key === "ArrowDown"|| e.key === "s") down()
 }, true);
 
-window.addEventListener("gamepadconnected", (e) => {
-  console.log(
-    `Gamepad connected at index ${e.gamepad.index}: ${e.gamepad.id}. ` +
-    `${e.gamepad.buttons.length} buttons, ${e.gamepad.axes.length} axes.`);
-});
-
 window.addEventListener("gamepadconnected", e => gamepadAPI.connect(e));
 window.addEventListener("gamepaddisconnected", e => gamepadAPI.disconnect(e));
 
 function ControllerEvents(){
   if (!gamepadAPI.controller) return;
+  gamepadAPI.update();
 
   if (gamepadAPI.buttonPressed("Start")) pauseGame();
 
-  if (gamepadAPI.axesStatus[1] > 0.4 || gamepadAPI.buttonPressed("A")) jump();
-  if (gamepadAPI.axesStatus[1] < -0.4) down();
+  if (gamepadAPI.axesStatus[1] < -0.4 || gamepadAPI.buttonPressed("A")) jump();
+  if (gamepadAPI.axesStatus[1] > 0.4) down();
   if (gamepadAPI.axesStatus[0] > 0.4) right();
   if (gamepadAPI.axesStatus[0] < -0.4) left();
 }
@@ -288,9 +283,9 @@ const gamepadAPI = {
     return pressed;
   },
   buttonPressed(button, hold=false) {
-  let newPress = gamepadAPI.buttonsStatus.includes(button);
-  if (!hold && gamepadAPI.buttonsCache.includes(button)) 
-    newPress = false;
-  return newPress;
+    let newPress = gamepadAPI.buttonsStatus.includes(button);
+    if (!hold && gamepadAPI.buttonsCache.includes(button)) 
+      newPress = false;
+    return newPress;
   }
 };
