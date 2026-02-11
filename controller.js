@@ -9,10 +9,6 @@ let lost = false;
 let facing = 1;
 let velocityY = 0; 
 
-bird.style.top = (GameScreen.clientHeight - bird.offsetHeight)/2 + "px";
-bird.style.left = (GameScreen.clientWidth - bird.offsetWidth)/2 + "px";
-
-
 function jump() {
   let topVal = parseInt(getComputedStyle(bird).top) || 0;
   let newTop = topVal - 35;
@@ -98,10 +94,8 @@ function gameover(){
   score.textContent = InGame ? TotalScore : "Gameover";
 }
 
-
-
-RetryButton.addEventListener("click", function() {
-  lost = false;
+function ResetGame(){
+    lost = false;
   InGame = false;
   TotalScore = 0;
 
@@ -109,6 +103,11 @@ RetryButton.addEventListener("click", function() {
   bird.style.left = GameScreen.offsetWidth/2 + "px";
 
   score.textContent = "Press SPACE to play";
+}
+
+
+RetryButton.addEventListener("click", function() {
+  ResetGame();
 });
 
 
@@ -162,7 +161,7 @@ function WallGeneration(){
     });
   }
 }
-
+ResetGame();
 FirstWallGeneration();
 
 function WallDeletion(){
@@ -186,13 +185,13 @@ function isTouching(a, b) {
 
 
 setInterval(() => {
+    ControllerEvents();
   if (InGame) {
     if ((!IsInsideParent(bird, GameScreen)) || hitsWall()) {
       gameover();
       return;
     } 
     BirdFall();
-    ControllerEvents();
     
     TotalScore = TotalScore + 1;
     score.textContent = TotalScore;
@@ -214,17 +213,18 @@ window.addEventListener("gamepadconnected", e => gamepadAPI.connect(e));
 window.addEventListener("gamepaddisconnected", e => gamepadAPI.disconnect(e));
 
 function ControllerEvents(){
+    gamepadAPI.update();
   if (!gamepadAPI.controller) return;
-  gamepadAPI.update();
-
+  if(gamepadAPI.buttonPressed("Back")) ResetGame();
+  if(lost) return;
+    console.log(gamepadAPI.buttonsCache.toString())
   if (gamepadAPI.buttonPressed("Start")) pauseGame();
-
+    if (!InGame) return;
   if (gamepadAPI.axesStatus[1] < -0.4 || gamepadAPI.buttonPressed("A")) jump();
   if (gamepadAPI.axesStatus[1] > 0.4) down();
   if (gamepadAPI.axesStatus[0] > 0.4) right();
   if (gamepadAPI.axesStatus[0] < -0.4) left();
 }
-
 
 const gamepadAPI = {
   buttonsStatus: [],
