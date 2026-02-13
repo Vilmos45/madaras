@@ -1,8 +1,12 @@
+import { ControllerEvents } from './controller.js';
+
+export {InGame, lost, pauseGame, gameover, ResetGame, jump, down, left, right}
+
 const bird = document.getElementById("bird");
 const GameScreen = document.getElementById("main_screen");
 const score = document.getElementById("score");
 const RetryButton = document.getElementById("retry");
-let TotalScore = 0;//kéne egy retry gomb
+let TotalScore = 0;
 
 let InGame = false;
 let lost = false;
@@ -98,6 +102,17 @@ function gameover(){
   score.textContent = InGame ? TotalScore : "Gameover";
 }
 
+function ResetGame(){
+  lost = false;
+  InGame = false;
+  TotalScore = 0;
+
+  bird.style.top = GameScreen.offsetHeight/2 + "px";
+  bird.style.left = GameScreen.offsetWidth/2 + "px";
+
+  score.textContent = "Press SPACE to play";
+}
+
 addEventListener("keydown", function (e) {
   e.preventDefault();
   if (lost) return;
@@ -110,14 +125,7 @@ addEventListener("keydown", function (e) {
 }, true);
 
 RetryButton.addEventListener("click", function() {
-  lost = false;
-  InGame = false;
-  TotalScore = 0;
-
-  bird.style.top = GameScreen.offsetHeight/2 + "px";
-  bird.style.left = GameScreen.offsetWidth/2 + "px";
-
-  score.textContent = "Press SPACE to play";
+  ResetGame();
 });
 
 
@@ -183,13 +191,13 @@ function WallDeletion(){
 
 
 setInterval(() => {
+  ControllerEvents();
   if (InGame) {
     if ((!IsInsideParent(bird, GameScreen)) || hitsWall()) {
       gameover();
       return;
     } else {
       BirdFall();
-      //gameLoop();
     }
     TotalScore = TotalScore + 1;
     score.textContent = TotalScore;
@@ -199,8 +207,6 @@ setInterval(() => {
 //kamera 
 
 const lineUpdater = document.getElementById("lineUp");
-
-GameScreen.appendChild(lineUpdater);
 
 function isTouching(a, b) {
   const r1 = a.getBoundingClientRect();

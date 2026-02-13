@@ -31,6 +31,7 @@ main{
     align-content: center;
     font-family: 'Courier New', Courier, monospace;
     font-size:smaller;
+    cursor: pointer;
 }
 
 #main_screen{
