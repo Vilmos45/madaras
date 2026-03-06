@@ -4,8 +4,8 @@ window.addEventListener("gamepadconnected", e => gamepadAPI.connect(e));
 window.addEventListener("gamepaddisconnected", e => gamepadAPI.disconnect(e));
 
  export const ControllerEvents = () =>{
-    gamepadAPI.update();
   if (!gamepadAPI.controller) return;
+    gamepadAPI.update();
   if(gamepadAPI.buttonPressed("Back")) ResetGame();
   if(lost) return;
     console.log(gamepadAPI.buttonsCache.toString())
@@ -23,7 +23,6 @@ const gamepadAPI = {
   axesStatus: [],
   controller: null,
   turbo: false,
-
   buttons: [
     "A","B","X","Y",
     "LB","RB","LT","RT",

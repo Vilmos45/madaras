@@ -6,8 +6,10 @@ const bird = document.getElementById("bird");
 const GameScreen = document.getElementById("main_screen");
 const score = document.getElementById("score");
 const RetryButton = document.getElementById("retry");
-let TotalScore = 0;
+const lineUp = document.getElementById("lineUp");
+const lineDown = document.getElementById("lineDown");
 
+let TotalScore = 0;
 let InGame = false;
 let lost = false;
 let facing = 1;
@@ -37,7 +39,6 @@ function BirdFall() {
 
   bird.style.top = newTop + "px";
 }
-
 
 function down() {
   BirdFall();
@@ -128,7 +129,6 @@ RetryButton.addEventListener("click", function() {
   ResetGame();
 });
 
-
 //akadályok:minták, generálásuk a pályán, fal spriteok betöltése
 
 const Templates = Object.freeze({
@@ -180,7 +180,6 @@ function WallGeneration(){
   }
 }
 
-FirstWallGeneration();
 
 function WallDeletion(){
   const cells = document.querySelectorAll(".cell, .Fal");
@@ -189,14 +188,16 @@ function WallDeletion(){
   });
 }
 
-
 setInterval(() => {
   ControllerEvents();
   if (InGame) {
     if ((!IsInsideParent(bird, GameScreen)) || hitsWall()) {
       gameover();
       return;
-    } else {
+    } else if(isTouching(bird, lineUp)){
+      CamUP();
+    }
+    {
       BirdFall();
     }
     TotalScore = TotalScore + 1;
@@ -205,9 +206,6 @@ setInterval(() => {
 }, 1000 / 25);
 
 //kamera 
-
-const lineUpdater = document.getElementById("lineUp");
-
 function isTouching(a, b) {
   const r1 = a.getBoundingClientRect();
   const r2 = b.getBoundingClientRect();
@@ -220,12 +218,9 @@ function isTouching(a, b) {
   );
 }
 
-function gameLoop() {
-  if (isTouching(bird, lineUpdater)){
-    console.log("Line touched!");
-  }
+function CamUP(){
 
-  requestAnimationFrame(gameLoop);
 }
 
+FirstWallGeneration();
 console.info("Game started succesfully...")
