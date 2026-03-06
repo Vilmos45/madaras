@@ -78,7 +78,6 @@ footer{
 }
 
 .cell {
-    position:absolute;
     width: calc(var(--main-width) / 5);
     height: calc(var(--main-width) / 5);
     image-rendering: pixelated;
